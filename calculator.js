@@ -3,6 +3,9 @@ let table = document.getElementById("resultsTable");
 
 let keepGoing = true;
 
+// Array to store valid numeric results
+let results = [];
+
 while (keepGoing) {
     // Prompt for X value
     let x = prompt("Enter the first number (x):");
@@ -57,8 +60,27 @@ while (keepGoing) {
                 result = "Error: Invalid operator.";
         }
         cellResult.textContent = result;
+
+        // Save only valid numeric results
+        if (typeof result === "number" && !isNaN(result)) {
+            results.push(result);
+        }
     }
 
     // Ask if the user wants to continue
     keepGoing = confirm("Do you want to perform another calculation?");
+}
+
+// After exiting loop, build summary table using document.write
+if (results.length > 0) {
+    let min = Math.min(...results);
+    let max = Math.max(...results);
+    let total = results.reduce((a, b) => a + b, 0);
+    let avg = (total / results.length).toFixed(2);
+
+    document.write("<h2 style='color:gold;'>Summary Table</h2>");
+    document.write("<table border='1' style='margin:auto; border-collapse:collapse; color:gold; background-color:black;'>");
+    document.write("<tr><th>Minimum</th><th>Maximum</th><th>Average</th><th>Total</th></tr>");
+    document.write("<tr><td>" + min + "</td><td>" + max + "</td><td>" + avg + "</td><td>" + total + "</td></tr>");
+    document.write("</table>");
 }
